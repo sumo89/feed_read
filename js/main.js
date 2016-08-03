@@ -29,10 +29,18 @@ app.descriptionShow = function(e){
 };
 $('.nasaDescWrap').on('click', app.descriptionShow);
 
-		
-
 //Nat Geo
+var NatGeoUrl = "https://natgeoapi.herokuapp.com/api/dailyphoto"
+$.ajax({
+	url: NatGeoUrl,
+	success: function(result){
+		$('#NatGeoImage').attr('src', result.src);
+		$('#NatGeoDesc').html(result.alt);
+		$('#NatGeoCredit').html(result.credit);
+	}
+});
 
+//images.nationalgeographic.com/wpf/media-live/photos/000/953/cache/borneo-sarawak-ritual_95347_990x742.jpg
 
 //Google
 
