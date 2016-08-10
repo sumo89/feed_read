@@ -9,25 +9,86 @@
 var app = {}
 
 //Nasa
-var NasaUrl = "https://api.nasa.gov/planetary/apod?api_key=qFJ1pZjIgYVKQO2VyfFgQLVfTd3OmyW8UB8OB9aQ";
+var nasaUrl = "https://api.nasa.gov/planetary/apod?api_key=qFJ1pZjIgYVKQO2VyfFgQLVfTd3OmyW8UB8OB9aQ";
+// var nasaUrlRandom = "https://api.nasa.gov/planetary/apod?date=" + dateYear + dateMonth + dateDay + "&api_key=qFJ1pZjIgYVKQO2VyfFgQLVfTd3OmyW8UB8OB9aQ";
+var $nasaImageTitle = $("#nasaImageTitle");
+var $nasaImageCopy = $("#nasaImageCopy");
+var $nasaImageDesc = $("#nasaImageDesc");
+var $nasaVideo = $("#nasaVideo");
+var $nasaImageResult = $("#nasaImageResult");
+
+//"https://api.nasa.gov/planetary/apod?date=2015-09-07&api_key=qFJ1pZjIgYVKQO2VyfFgQLVfTd3OmyW8UB8OB9aQ"
+// on click of random button - change the aasaUrl ot the random one.
+
+// var dateYear = Math.floor(Math.random() * 2016) + 1996;
+// doesn't work as numbers are too large
+
+// function randomdateYear(min, max) {
+//   return Math.floor(Math.random() * (max - min) + min);
+// };
+
+// var dateYear = randomdateYear(1996, 2016);
+// var dateMonth = Math.floor(Math.random() * 12) + 1;
+// var dateDay = Math.floor(Math.random() * 28) + 1;
+
+app.generateRandom = function(e){
+	e.preventDefault();
+	
+	function randomdateYear(min, max) {
+	  return Math.floor(Math.random() * (max - min) + min);
+	};
+
+	var dateYear = randomdateYear(1996, 2016);
+	var dateMonth = Math.floor(Math.random() * 12) + 1;
+	var dateDay = Math.floor(Math.random() * 28) + 1;
+
+	var nasaUrlRandom = "https://api.nasa.gov/planetary/apod?date=" + dateYear + "-"
+	 + dateMonth + "-" + dateDay + "&api_key=qFJ1pZjIgYVKQO2VyfFgQLVfTd3OmyW8UB8OB9aQ";
+	$.ajax({
+		url: nasaUrlRandom,
+		success: function(result){
+		$nasaImageTitle.html(result.title);
+		$nasaImageCopy.html(result.copyright);
+		$nasaImageDesc.html(result.explanation);
+		// toggle for image or video
+		if (result.media_type == "video"){
+			$nasaVideo.attr('src', result.url)
+			$nasaImageResult.toggleClass('is-hidden');
+		} else {
+			$nasaImageResult.attr('src', result.url);
+		};
+		}
+	});
+};
 
 $.ajax({
-	url: NasaUrl,
+	url: nasaUrl,
 	success: function(result){
-		$("#nasaImageResult").attr('src', result.url);
-		$("#nasaImageTitle").html(result.title);
-		$("#nasaImageCopy").html(result.copyright);
-		$("#nasaImageDesc").html(result.explanation);
+	$nasaImageTitle.html(result.title);
+	$nasaImageCopy.html(result.copyright);
+	$nasaImageDesc.html(result.explanation);
+	// toggle for image or video
+	if (result.media_type == "video"){
+		$nasaVideo.attr('src', result.url)
+		$nasaImageResult.toggleClass('is-hidden');
+	} else {
+		$nasaImageResult.attr('src', result.url);
+		$nasaVideo.toggleClass('is-hidden');
+	};
 	}
 });
-
 //toggle hide on description
 app.descriptionShow = function(e){
 	e.preventDefault();
 	$("#nasaImageDesc").toggleClass('is-hidden');
 	$("#nasaDesctiption").toggleClass('is-hidden');
 };
+
 $('.nasaDescWrap').on('click', app.descriptionShow);
+$(".randomButton").on('click', app.generateRandom);
+
+
+
 
 //Nat Geo
 var NatGeoUrl = "https://natgeoapi.herokuapp.com/api/dailyphoto"
@@ -40,7 +101,6 @@ $.ajax({
 	}
 });
 
-//images.nationalgeographic.com/wpf/media-live/photos/000/953/cache/borneo-sarawak-ritual_95347_990x742.jpg
 
 //Google
 
