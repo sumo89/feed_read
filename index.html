@@ -23,9 +23,11 @@
 				<p class="boxHeader"><h2>Nasa image of the day</h2></p>
 					<img src="" alt="Nasa Image" id="nasaImageResult">
 					<iframe src="" id="nasaVideo" type="text/html"></iframe>
-					<div class="randomButtonWrap"><a href="" class="randomButton">
+					<div class="randomButtonWrap">
+						<a href="" class="randomButton" id="randomButtonLink">
 					Random Image
-				</a></div>
+						</a>
+					</div>
 					<p id="nasaImageTitle">
 					</p>
 					<p id="nasaImageCopy">
@@ -49,13 +51,18 @@
 			
 			<div class="newsWrap clearfix">
 				<div class="newsBox">
-					Google trending news - vert list
-				</div>
-				<div class="newsBox">
 					Reddit
+						<div>What would you like to see?
+						<form>
+							<input type="text" id="redditSearch">
+							<input type="submit" id="redditSubmit">
+						</form>
+						<div id="redditImageWrap">
+						</div>
+					</div>
 				</div>
 				<div class="newsBox">
-					Bing news feed
+					Guardian/Bing news feed
 				</div>
 			</div>
 		</div>

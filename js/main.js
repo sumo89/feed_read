@@ -17,23 +17,9 @@ var $nasaImageDesc = $("#nasaImageDesc");
 var $nasaVideo = $("#nasaVideo");
 var $nasaImageResult = $("#nasaImageResult");
 
-//"https://api.nasa.gov/planetary/apod?date=2015-09-07&api_key=qFJ1pZjIgYVKQO2VyfFgQLVfTd3OmyW8UB8OB9aQ"
-// on click of random button - change the aasaUrl ot the random one.
-
-// var dateYear = Math.floor(Math.random() * 2016) + 1996;
-// doesn't work as numbers are too large
-
-// function randomdateYear(min, max) {
-//   return Math.floor(Math.random() * (max - min) + min);
-// };
-
-// var dateYear = randomdateYear(1996, 2016);
-// var dateMonth = Math.floor(Math.random() * 12) + 1;
-// var dateDay = Math.floor(Math.random() * 28) + 1;
-
 app.generateRandom = function(e){
 	e.preventDefault();
-	
+
 	function randomdateYear(min, max) {
 	  return Math.floor(Math.random() * (max - min) + min);
 	};
@@ -88,8 +74,6 @@ $('.nasaDescWrap').on('click', app.descriptionShow);
 $(".randomButton").on('click', app.generateRandom);
 
 
-
-
 //Nat Geo
 var NatGeoUrl = "https://natgeoapi.herokuapp.com/api/dailyphoto"
 $.ajax({
@@ -100,12 +84,46 @@ $.ajax({
 		$('#NatGeoCredit').html(result.credit);
 	}
 });
-
-
-//Google
-
-
 //Guardian
 
-
 //Reddit
+app.redditAdd = function(e){
+	var searchWord = $('#redditSearch').val();
+		$.ajax({
+			url: "https://www.reddit.com/r/pics/search.json?q=" + searchWord + "&sort=new&restrict_sr=on&t=all",
+			success: function(result){
+				for (var i = 0; i < 11; i++){
+					var searchResultImage = result.data.children[i].data.preview.images[0].source.url;
+					$('#redditImageWrap').addClass('hasImages')
+					$('#redditImageWrap').append('<img class="redditImage" src=' + searchResultImage + '>');
+					console.log("result 3");
+				};
+			}
+		});
+};
+app.redditSearch = function(e){
+	e.preventDefault();
+	if($('#redditImageWrap').hasClass('hasImages')){
+		$('.redditImage').remove();
+		console.log("removed");
+		app.redditAdd();
+	} else {
+		app.redditAdd();
+		console.log("added");
+	};
+};
+app.redditClear = function(e){
+	e.preventDefault();
+	$('.redditImage').remove();
+	console.log("removed");
+};
+
+$('#redditSubmit').on('click', app.redditSearch);
+
+
+
+
+// "https://www.reddit.com/r/pics/search.json?q=kittens&sort=new"
+
+
+
